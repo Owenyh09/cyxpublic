@@ -1,6 +1,7 @@
 :root {
-    --primary-color: #7ec8e3;
+    --primary-color: #7ec8e3;  /* 浅蓝色 */
     --secondary-color: #c5e3f0;
+    --accent-color: #7ec8e3;   /* 用于按钮和特效 */
     --text-color: #334155;
     --background-color: #f8fafc;
 }
@@ -152,54 +153,125 @@ footer {
     text-align: center;
 }
 
-/* 修改爱心文字样式 */
+/* 修改宋亚轩老婆文字样式 */
 .love-text {
-    font-size: 48px;  /* 更大的字体 */
-    font-weight: bold;
-    background: linear-gradient(45deg, #ff69b4, #ff1493);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-align: center;
-    margin: 30px 0;
-    animation: heartbeat 1.5s ease-in-out infinite;
-    text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.3);
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    display: inline-block;
     cursor: pointer;
-    user-select: none;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-size: 24px;
+    color: #ff1493;
+    font-weight: bold;
+    padding: 10px;
+    text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+    animation: gentleFloat 4s ease-in-out infinite;
+    will-change: transform, text-shadow, color;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    transform: translateZ(0);
 }
 
 .love-text:hover {
-    transform: scale(1.2);
-    filter: brightness(1.2);
+    transform: scale(1.1) translateZ(0);
+    color: #ff69b4;
+    text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.5);
+    animation: none;
 }
 
-.love-text::after {
-    content: '❤️';
-    position: absolute;
-    opacity: 0;
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translateY(0) translateZ(0);
+        text-shadow: 2px 2px 4px rgba(255, 105, 180, 0.3);
+    }
+    50% {
+        transform: translateY(-3px) translateZ(0);
+        text-shadow: 2px 2px 8px rgba(255, 105, 180, 0.5);
+    }
+}
+
+/* 添加心形环绕动画 */
+.circle-heart {
+    position: fixed;
     pointer-events: none;
+    animation: circleAround 2s ease-out forwards;
+    transform-origin: center;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.4));
 }
 
-/* 添加爱心动画 */
-@keyframes floatHeart {
+@keyframes circleAround {
     0% {
-        transform: translateY(0) scale(1);
+        transform: rotate(var(--angle)) translateX(0) scale(0);
+        opacity: 0;
+    }
+    20% {
+        transform: rotate(var(--angle)) translateX(var(--radius)) scale(1);
+        opacity: 1;
+    }
+    80% {
+        transform: rotate(calc(var(--angle) + 360deg)) translateX(var(--radius)) scale(1);
         opacity: 1;
     }
     100% {
-        transform: translateY(-100px) scale(0);
+        transform: rotate(calc(var(--angle) + 720deg)) translateX(0) scale(0);
         opacity: 0;
     }
 }
 
+/* 优化爱心动画 */
 .floating-heart {
     position: fixed;
     pointer-events: none;
-    animation: floatHeart 1s forwards;
-    font-size: 24px;
+    animation: improvedFloat 1.5s ease-out forwards;
     z-index: 1000;
+    filter: drop-shadow(0 0 5px rgba(255, 105, 180, 0.3));
+}
+
+@keyframes improvedFloat {
+    0% {
+        transform: translateY(0) scale(1) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: translateY(-50px) scale(1.2) rotate(20deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-100px) scale(0) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* 优化点击效果 */
+.burst-heart {
+    position: fixed;
+    pointer-events: none;
+    animation: burstOut 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: transform, opacity;
+    filter: drop-shadow(0 0 8px rgba(255, 105, 180, 0.4));
+}
+
+@keyframes burstOut {
+    0% {
+        transform: 
+            translate(
+                calc(cos(var(--angle)) * var(--distance) * 0.2),
+                calc(sin(var(--angle)) * var(--distance) * 0.2)
+            )
+            scale(1.2)
+            rotate(calc(var(--angle) + 45deg));
+        opacity: 1;
+    }
+    100% {
+        transform: 
+            translate(
+                calc(cos(var(--angle)) * var(--distance)),
+                calc(sin(var(--angle)) * var(--distance))
+            )
+            scale(0)
+            rotate(calc(var(--angle) + 90deg));
+        opacity: 0;
+    }
 }
 
 /* 修改关于部分的样式 */
@@ -215,11 +287,6 @@ footer {
 }
 
 /* 添加新的动画效果 */
-.burst-heart {
-    position: fixed;
-    animation: burstAnimation 1s forwards;
-}
-
 .rainbow-heart {
     position: fixed;
     animation: rainbowFloat 2s forwards;
@@ -230,17 +297,6 @@ footer {
     position: fixed;
     animation: rainAnimation 3s linear forwards;
     top: -20px;
-}
-
-@keyframes burstAnimation {
-    0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100px) translateX(var(--tx)) scale(0);
-        opacity: 0;
-    }
 }
 
 @keyframes rainbowFloat {
@@ -268,6 +324,634 @@ footer {
     }
     100% {
         transform: translateY(120vh);
+        opacity: 0;
+    }
+}
+
+/* 添加新的样式 */
+.spiral-heart {
+    position: fixed;
+    animation: spiralOut 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    transform-origin: center;
+}
+
+.glowing {
+    animation: glow 0.5s ease-in-out infinite alternate;
+    box-shadow: 0 0 20px #ff69b4, 0 0 40px #ff1493;
+}
+
+.particle {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: particleFade 1s ease-out forwards;
+}
+
+.wave-text span {
+    display: inline-block;
+    animation: wave 0.5s ease-in-out infinite;
+}
+
+/* 新增动画关键帧 */
+@keyframes spiralOut {
+    0% {
+        transform: rotate(var(--angle)) translateX(0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(var(--angle)) translateX(100px) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+    }
+    to {
+        text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff1493, 0 0 40px #ff69b4;
+    }
+}
+
+@keyframes particleFade {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+            calc(random(100) * 1px),
+            calc(random(100) * -1px)
+        ) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* 添加新样式 */
+.shake-effect {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+}
+
+.heart-explosion span {
+    position: absolute;
+    font-size: 24px;
+    animation: explode var(--speed) ease-out forwards;
+    animation-delay: var(--delay);
+    transform: rotate(var(--rotate));
+}
+
+.heart-firework {
+    position: fixed;
+    pointer-events: none;
+}
+
+.heart-firework span {
+    position: absolute;
+    width: 4px;
+    height: 20px;
+    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    transform-origin: bottom;
+    animation: firework 1s ease-out forwards;
+}
+
+/* 新增动画关键帧 */
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+@keyframes explode {
+    0% {
+        transform: translateY(0) rotate(var(--rotate));
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(var(--rotate));
+        opacity: 0;
+    }
+}
+
+@keyframes firework {
+    0% {
+        transform: rotate(var(--angle)) scaleY(1);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(var(--angle)) scaleY(0);
+        opacity: 0;
+    }
+}
+
+/* 抽卡系统样式优化 */
+.draw-section {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(126, 200, 227, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.draw-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.draw-header h3 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.draw-description {
+    color: #666;
+    font-size: 16px;
+}
+
+.draw-main {
+    background: #f8fafc;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.draw-count-wrapper {
+    background: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(126, 200, 227, 0.1);
+    margin-bottom: 20px;
+}
+
+.draw-label {
+    color: #666;
+    margin-right: 10px;
+}
+
+.draw-count {
+    color: var(--primary-color);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.inventory-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.card-type {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.card-type.r {
+    background: linear-gradient(45deg, #cd7f32, #deb887);
+}
+
+.card-type.sr {
+    background: linear-gradient(45deg, #c0c0c0, #e0e0e0);
+}
+
+.card-type.ssr {
+    background: linear-gradient(45deg, #ffd700, #ffa500);
+}
+
+.card-count {
+    color: #666;
+    font-weight: bold;
+}
+
+.combine-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.combine-button:disabled {
+    background: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+}
+
+.combine-button:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.combine-button:not(:disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(126, 200, 227, 0.3);
+}
+
+.activation-code {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.code-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.activate-button {
+    padding: 12px 30px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.activate-button:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(126, 200, 227, 0.3);
+}
+
+/* 卡片展示区优化 */
+.cards-display {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(126, 200, 227, 0.1);
+}
+
+/* 添加新的卡片库存样式 */
+.card-inventory {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(126, 200, 227, 0.2);
+}
+
+.card-inventory p {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-inventory button {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.card-inventory button:hover:not([disabled]) {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.card-inventory button[disabled] {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* 添加UR卡片样式 */
+.card-rarity.ur {
+    background: linear-gradient(45deg, #ffd700, #ff0000);
+    animation: urShine 2s infinite;
+}
+
+@keyframes urShine {
+    0% { filter: brightness(1) hue-rotate(0deg); }
+    50% { filter: brightness(1.3) hue-rotate(30deg); }
+    100% { filter: brightness(1) hue-rotate(0deg); }
+}
+
+/* 添加免费抽取相关样式 */
+.free-draw-text {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(45deg, #ff69b4, #ff1493);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 14px;
+    font-weight: bold;
+    animation: bounceIn 0.5s ease-out;
+}
+
+.free-draw .card-reveal {
+    animation: freeDrawGlow 2s infinite;
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: translateX(-50%) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.2);
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes freeDrawGlow {
+    0% {
+        box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 50px rgba(255, 105, 180, 0.8),
+                    0 0 80px rgba(255, 20, 147, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(255, 105, 180, 0.5);
+    }
+}
+
+/* 优化R卡片样式 */
+.card-reveal.r {
+    background: linear-gradient(145deg, #ffffff, #fff5f8);
+    border: 2px solid #ffb6c1;
+}
+
+.rarity-tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+/* 添加新的卡片库存样式 */
+.card-inventory {
+    margin: 20px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(126, 200, 227, 0.2);
+}
+
+.card-inventory p {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-inventory button {
+    padding: 5px 15px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.card-inventory button:hover:not([disabled]) {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 105, 180, 0.3);
+}
+
+.card-inventory button[disabled] {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+/* 添加UR卡片样式 */
+.card-rarity.ur {
+    background: linear-gradient(45deg, #ffd700, #ff0000);
+    animation: urShine 2s infinite;
+}
+
+@keyframes urShine {
+    0% { filter: brightness(1) hue-rotate(0deg); }
+    50% { filter: brightness(1.3) hue-rotate(30deg); }
+    100% { filter: brightness(1) hue-rotate(0deg); }
+}
+
+/* 添加卡片展示区样式 */
+.cards-display {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+/* 优化抽卡按钮样式 */
+.draw-button {
+    padding: 15px 50px;
+    font-size: 20px;
+    background: linear-gradient(45deg, #5fb8ff, #4169e1);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(65, 105, 225, 0.3);
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.draw-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(65, 105, 225, 0.4);
+    background: linear-gradient(45deg, #4169e1, #1e90ff);
+}
+
+.draw-button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(65, 105, 225, 0.3);
+}
+
+.draw-button::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        45deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transform: rotate(45deg);
+    animation: buttonShine 3s infinite;
+}
+
+.draw-button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.draw-button:disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+@keyframes buttonShine {
+    0% {
+        transform: translateX(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) rotate(45deg);
+    }
+}
+
+/* 优化抽卡区域样式 */
+.draw-info {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(126, 200, 227, 0.15);
+}
+
+.draw-count-wrapper {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: linear-gradient(135deg, #f0f8ff, #e6f3ff);
+    border-radius: 15px;
+    display: inline-block;
+}
+
+.draw-label {
+    font-size: 18px;
+    color: #666;
+    margin-right: 10px;
+}
+
+.draw-count {
+    font-size: 28px;
+    color: #4169e1;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(65, 105, 225, 0.2);
+}
+
+/* 添加抽卡动画样式 */
+.draw-overlay {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.draw-animation {
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-reveal {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+}
+
+.message {
+    animation: fadeInScale 0.3s ease-out;
+    font-family: 'Noto Sans SC', sans-serif;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { 
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* 修改鼠标悬停爱心效果 */
+.hover-heart {
+    position: fixed;
+    pointer-events: none;
+    font-size: 24px;
+    animation: quickFloat 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    will-change: transform, opacity;
+    z-index: 1000;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    filter: drop-shadow(0 0 3px rgba(255, 105, 180, 0.3));
+}
+
+@keyframes quickFloat {
+    0% {
+        transform: scale(0.8) translateY(0) translateZ(0);
+        opacity: 0;
+    }
+    30% {
+        transform: scale(1.1) translateY(-10px) translateZ(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0) translateY(-30px) translateZ(0);
         opacity: 0;
     }
 } 

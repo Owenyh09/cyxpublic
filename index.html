@@ -45,11 +45,55 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2>联系方式</h2>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <i class="fab fa-weixin"></i>
-                    <p>微信：TNTsyxcyx1222</p>
+            <div class="draw-section">
+                <div class="draw-header">
+                    <h3>抽卡系统</h3>
+                    <p class="draw-description">集齐卡片解锁微信号</p>
                 </div>
+                
+                <div class="draw-main">
+                    <div class="draw-info">
+                        <div class="draw-count-wrapper">
+                            <span class="draw-label">剩余抽卡次数:</span>
+                            <span class="draw-count">3</span>
+                        </div>
+                        <button class="draw-button">抽 卡</button>
+                    </div>
+
+                    <div class="card-inventory">
+                        <h4>卡片库存</h4>
+                        <div class="inventory-item">
+                            <span class="card-type r">R 卡</span>
+                            <span class="card-count">0 张</span>
+                            <button class="combine-button" data-rarity="R">
+                                合成SR (需要10张)
+                            </button>
+                        </div>
+                        <div class="inventory-item">
+                            <span class="card-type sr">SR 卡</span>
+                            <span class="card-count">0 张</span>
+                            <button class="combine-button" data-rarity="SR">
+                                合成SSR (需要10张)
+                            </button>
+                        </div>
+                        <div class="inventory-item">
+                            <span class="card-type ssr">SSR 卡</span>
+                            <span class="card-count">0 张</span>
+                            <button class="combine-button" data-rarity="SSR">
+                                兑换微信号 (需要3张)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="activation-code">
+                        <input type="text" class="code-input" placeholder="输入激活码获得抽卡次数">
+                        <button class="activate-button">激 活</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cards-display">
+                <!-- 这里会显示已获得的卡片 -->
             </div>
         </div>
     </section>
