@@ -57,7 +57,10 @@
                             <span class="draw-label">剩余抽卡次数:</span>
                             <span class="draw-count">3</span>
                         </div>
-                        <button class="draw-button">抽 卡</button>
+                        <div class="draw-buttons">
+                            <button class="draw-button">单抽</button>
+                            <button class="draw-button multi-draw">十连抽</button>
+                        </div>
                     </div>
 
                     <div class="card-inventory">
@@ -79,15 +82,32 @@
                         <div class="inventory-item">
                             <span class="card-type ssr">SSR 卡</span>
                             <span class="card-count">0 张</span>
-                            <button class="combine-button" data-rarity="SSR">
-                                兑换微信号 (需要3张)
-                            </button>
+                            <div class="exchange-info">
+                                <span class="exchange-count">已兑换: 0/3 次</span>
+                                <button class="combine-button" data-rarity="SSR">
+                                    兑换微信号 (需要3张)
+                                </button>
+                            </div>
+                        </div>
+                        <div class="inventory-item or-card" style="display: none;">
+                            <span class="card-type or">隐藏卡片</span>
+                            <span class="card-count">0 张</span>
+                        </div>
+                        <div class="inventory-item hr-card">
+                            <span class="card-type hr">HR 卡</span>
+                            <span class="card-count">0 张</span>
+                            <div class="hr-info">
+                                <span class="hr-progress">收集进度: 0/10</span>
+                                <button class="combine-button" data-rarity="HR" disabled>
+                                    兑换照片 (需要10张)
+                                </button>
+                            </div>
                         </div>
                     </div>
 
                     <div class="activation-code">
-                        <input type="text" class="code-input" placeholder="输入激活码获得抽卡次数">
-                        <button class="activate-button">激 活</button>
+                        <input type="text" class="code-input" placeholder="请输入激活码">
+                        <button class="activate-button">激活</button>
                     </div>
                 </div>
             </div>
